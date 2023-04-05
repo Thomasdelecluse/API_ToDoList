@@ -6,6 +6,7 @@ import fr.apitodolist.apitodolist.dto.UpdateTodoDto;
 import fr.apitodolist.apitodolist.modele.Todo;
 import fr.apitodolist.apitodolist.service.impl.TodoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -46,5 +47,10 @@ public class TodosController {
     public ResponseEntity<?> deleteById(@PathVariable long id) {
         todoService.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping ("/test")
+    public String test(Authentication authentification) {
+        return "vous etes " + authentification.getName() ;
     }
 }
