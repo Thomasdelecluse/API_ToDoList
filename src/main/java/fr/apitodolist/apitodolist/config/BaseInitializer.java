@@ -24,7 +24,7 @@ public class BaseInitializer {
             iUtilisateurRepository.save(user);
             Utilisateur admin = new Utilisateur("admin","admin",true);
             iUtilisateurRepository.save(admin);
-            logger.info("utilisateur crée");
+            logger.info("Les utilisateurs par default ont été créés");
         };
     }
 }
