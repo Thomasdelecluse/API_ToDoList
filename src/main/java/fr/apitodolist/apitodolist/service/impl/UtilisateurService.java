@@ -5,7 +5,9 @@ import fr.apitodolist.apitodolist.dto.register.CreateUtilisateurDto;
 import fr.apitodolist.apitodolist.modele.Utilisateur;
 import fr.apitodolist.apitodolist.repository.IUtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.logging.Logger;
 
@@ -15,12 +17,19 @@ public class UtilisateurService {
     @Autowired
     IUtilisateurRepository iUtilisateurRepository;
     public UtilisateurDto create(CreateUtilisateurDto createUtilisateurDto) {
+        Utilisateur usersAlreadyExist = iUtilisateurRepository.findByLogin(createUtilisateurDto.login());
+        //check if login already exist
+        if(usersAlreadyExist != null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Login already exist");
+        }
+        //create new utilisateur
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setLogin(createUtilisateurDto.login());
         utilisateur.setPassword(createUtilisateurDto.password());
         utilisateur.setAdmin(false);
+        //save utilisateur
         utilisateur = iUtilisateurRepository.save(utilisateur);
-        logger.info("compte crée");
+        logger.info("Le compte " + utilisateur.getLogin() + " a été créé");
         return new UtilisateurDto(utilisateur.getId(), utilisateur.getLogin(), utilisateur.getPassword(), utilisateur.isAdmin());
     }
 
