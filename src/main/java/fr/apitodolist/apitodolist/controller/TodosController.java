@@ -6,10 +6,12 @@ import fr.apitodolist.apitodolist.dto.UpdateTodoDto;
 import fr.apitodolist.apitodolist.modele.Todo;
 import fr.apitodolist.apitodolist.service.impl.TodoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.ArrayList;
 
 @RestController
@@ -50,7 +52,7 @@ public class TodosController {
     }
 
     @GetMapping ("/test")
-    public String test(Authentication authentification) {
-        return "vous etes " + authentification.getName() ;
+    public String test(Principal principal) {
+        return "vous etes " + principal.getName() ;
     }
 }
