@@ -1,13 +1,10 @@
 package fr.apitodolist.apitodolist.controller;
 
-import fr.apitodolist.apitodolist.dto.CreateTodoDto;
-import fr.apitodolist.apitodolist.dto.TodoDto;
-import fr.apitodolist.apitodolist.dto.UpdateTodoDto;
-import fr.apitodolist.apitodolist.modele.Todo;
+import fr.apitodolist.apitodolist.dto.todo.CreateTodoDto;
+import fr.apitodolist.apitodolist.dto.todo.TodoDto;
+import fr.apitodolist.apitodolist.dto.todo.UpdateTodoDto;
 import fr.apitodolist.apitodolist.service.impl.TodoService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;

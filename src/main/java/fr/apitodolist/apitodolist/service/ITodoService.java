@@ -1,9 +1,8 @@
 package fr.apitodolist.apitodolist.service;
 
 
-import fr.apitodolist.apitodolist.dto.CreateTodoDto;
-import fr.apitodolist.apitodolist.dto.TodoDto;
-import fr.apitodolist.apitodolist.modele.Todo;
+import fr.apitodolist.apitodolist.dto.todo.CreateTodoDto;
+import fr.apitodolist.apitodolist.dto.todo.TodoDto;
 
 import java.util.ArrayList;
 

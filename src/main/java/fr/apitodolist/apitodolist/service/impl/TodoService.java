@@ -1,8 +1,8 @@
 package fr.apitodolist.apitodolist.service.impl;
 
-import fr.apitodolist.apitodolist.dto.CreateTodoDto;
-import fr.apitodolist.apitodolist.dto.TodoDto;
-import fr.apitodolist.apitodolist.dto.UpdateTodoDto;
+import fr.apitodolist.apitodolist.dto.todo.CreateTodoDto;
+import fr.apitodolist.apitodolist.dto.todo.TodoDto;
+import fr.apitodolist.apitodolist.dto.todo.UpdateTodoDto;
 import fr.apitodolist.apitodolist.modele.Todo;
 import fr.apitodolist.apitodolist.repository.ITodoRepository;
 import fr.apitodolist.apitodolist.service.ITodoService;
@@ -15,8 +15,9 @@ import java.util.logging.Logger;
 
 @Service
 public class TodoService implements ITodoService {
+
     // Récupération de notre logger.
-    private static final Logger LOGGER = Logger.getLogger( "Compo1" );
+    private static final Logger logger = Logger.getLogger( "Compo1" );
     @Autowired
     private ITodoRepository toDoListRepository;
 
@@ -26,7 +27,7 @@ public class TodoService implements ITodoService {
         todo.setDescription(createTodoDto.description());
         todo.setType(createTodoDto.type());
         todo.setStatus(false);
-        LOGGER.info("Création de la todololist " + todo.getId() +" "+ todo.getTitle());
+        logger.info("Création de la todololist " + todo.getId() +" "+ todo.getTitle());
         todo = toDoListRepository.save(todo);
         return new TodoDto(todo.getId(), todo.getTitle(), todo.getDescription(), todo.getType(), todo.getStatus());
     }
@@ -44,7 +45,7 @@ public class TodoService implements ITodoService {
             TodoDto createTodoDto = new TodoDto(todo.getId(), todo.getTitle(), todo.getDescription(), todo.getType(), todo.getStatus());
             listOfTodo.add(createTodoDto);
         }
-        LOGGER.info("Récupération de tout les todo : " + listOfTodo);
+        logger.info("Récupération de tout les todo : " + listOfTodo);
         return listOfTodo;
     }
 
@@ -63,12 +64,12 @@ public class TodoService implements ITodoService {
             todo.setType(updateTodoDto.type());
         }
         todo = toDoListRepository.save(todo);
-        LOGGER.info("Modification de la tâche " + id + " avec la valeur " + updateTodoDto.status());
+        logger.info("Modification de la tâche " + id + " avec la valeur " + updateTodoDto.status());
         return new TodoDto(todo.getId(), todo.getTitle(), todo.getDescription(), todo.getType(), todo.getStatus());
     }
 
     public void deleteById(long id) {
         toDoListRepository.deleteById(id);
-        LOGGER.info("Suppression de la tâche " + id);
+        logger.info("Suppression de la tâche " + id);
     }
 }
