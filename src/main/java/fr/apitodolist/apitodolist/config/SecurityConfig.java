@@ -1,4 +1,4 @@
-package fr.apitodolist.apitodolist;
+package fr.apitodolist.apitodolist.config;
 
 import fr.apitodolist.apitodolist.service.impl.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -25,15 +25,13 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
-                .authorizeHttpRequests((requests) -> {
-                            requests
-                                    .requestMatchers(new AntPathRequestMatcher("/todos"))
-                                    .permitAll()
-                                    .requestMatchers(HttpMethod.GET, "/test").hasRole("ADMIN")
-                                    .anyRequest().hasRole("USER")
-                            ;
-                        }
-                )
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/utilisateur")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET,"/test")
+                .hasRole("ADMIN")
+                .anyRequest().hasRole("USER")
+                .and()
                 .httpBasic()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
