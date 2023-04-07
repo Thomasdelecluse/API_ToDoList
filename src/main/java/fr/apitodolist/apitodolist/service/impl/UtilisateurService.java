@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.logging.Logger;
 
 @Service
@@ -30,6 +31,11 @@ public class UtilisateurService {
         //save utilisateur
         utilisateur = iUtilisateurRepository.save(utilisateur);
         logger.info("Le compte " + utilisateur.getLogin() + " a été créé");
+        return new UtilisateurDto(utilisateur.getId(), utilisateur.getLogin(), utilisateur.getPassword(), utilisateur.isAdmin());
+    }
+
+    public UtilisateurDto fetchByLogin(String login) {
+       Utilisateur utilisateur = iUtilisateurRepository.findByLogin(login);
         return new UtilisateurDto(utilisateur.getId(), utilisateur.getLogin(), utilisateur.getPassword(), utilisateur.isAdmin());
     }
 
