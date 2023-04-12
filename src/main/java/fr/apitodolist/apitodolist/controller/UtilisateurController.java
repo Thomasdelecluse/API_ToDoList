@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
@@ -34,18 +35,27 @@ public class UtilisateurController {
                     .toUri();
             return ResponseEntity.created(location).body(createAccount);
         } catch (Exception e) {
-            String errorMessage = "Une erreur est survenue lors de la création de l'utilisateur : " + e.getMessage();
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
     @GetMapping("/utilisateurs/{login}")
     @PreAuthorize("#login == authentication.principal.username")
-    public ResponseEntity<UtilisateurDto> create(@PathVariable String login) {
+    public ResponseEntity<UtilisateurDto> fetchById(@PathVariable String login) {
         try {
             return  ResponseEntity.ok(utilisateurService.fetchByLogin(login));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @GetMapping("/utilisateurs")
+    public ResponseEntity<ArrayList<UtilisateurDto>> fetchAll() {
+        try{
+            return  ResponseEntity.ok(utilisateurService.fetchAll());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

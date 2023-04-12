@@ -40,7 +40,5 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .build();
         logger.info("Utilisateur connecté" + " " + username);
         return userDetails;
-
-
     }
 }
