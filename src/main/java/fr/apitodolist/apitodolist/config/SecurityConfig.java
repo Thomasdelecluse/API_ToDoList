@@ -11,7 +11,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,22 +32,27 @@ public class SecurityConfig {
     private JwtTokens jwtTokens;
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
         return http
                 .csrf().disable()
-                .addFilter(new JwtAuthenticationFilter(authenticationManagerBuilder.getObject(), jwtTokens, Keys.secretKeyFor(SignatureAlgorithm.HS512)))
-                .addFilter(new JwtAuthorizationFilter(authenticationManagerBuilder.getObject(), jwtTokens))
+                        .addFilter(new JwtAuthenticationFilter(authenticationManagerBuilder.getObject(), jwtTokens, secretKey))
+                        .addFilter(new JwtAuthorizationFilter(authenticationManagerBuilder.getObject(), jwtTokens, secretKey))
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/utilisateur")
-                .permitAll()
-                .requestMatchers(HttpMethod.GET,"/test")
-                .hasRole("ADMIN")
-                .anyRequest().hasRole("USER")
-                .and()
+                        .requestMatchers(HttpMethod.POST, "/utilisateur")
+                            .permitAll()
+                        .requestMatchers(HttpMethod.GET,"/test")
+                            .hasRole("ADMIN")
+                        .anyRequest()
+                            .hasRole("USER")
+                        .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .build();
+                        .and()
+                            .headers().frameOptions().disable()
+                        .and()
+                            .build();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
