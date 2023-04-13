@@ -40,7 +40,7 @@ public class UtilisateurController {
     }
 
     @GetMapping("/utilisateurs/{login}")
-    @PreAuthorize("#login == authentication.principal.username")
+    @PreAuthorize("#login.equals(authentication.name)")
     public ResponseEntity<UtilisateurDto> fetchById(@PathVariable String login) {
         try {
             return  ResponseEntity.ok(utilisateurService.fetchByLogin(login));
