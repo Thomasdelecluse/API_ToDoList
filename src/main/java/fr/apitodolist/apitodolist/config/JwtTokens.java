@@ -26,6 +26,7 @@ public class JwtTokens {
         var roles = userDetails.getAuthorities().stream().map(auth->auth.getAuthority()).collect(Collectors.toList());
         Claims claims = Jwts.claims().setSubject(login);
         claims.put("roles", roles);
+        claims.setIssuedAt(new Date());
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
