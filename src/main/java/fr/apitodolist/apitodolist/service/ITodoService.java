@@ -9,8 +9,6 @@ import java.util.ArrayList;
 public interface ITodoService {
     TodoDto create(CreateTodoDto createTodoDto);
 
-    ArrayList<TodoDto> fetchAll();
-
     TodoDto fetchById(long id);
 }
 

@@ -7,6 +7,7 @@ import fr.apitodolist.apitodolist.modele.Todo;
 import fr.apitodolist.apitodolist.repository.ITodoRepository;
 import fr.apitodolist.apitodolist.service.ITodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,11 +25,12 @@ public class TodoService implements ITodoService {
     public TodoDto create(CreateTodoDto createTodoDto) {
         Todo todo = new Todo();
         todo.setTitle(createTodoDto.title());
+        todo.setName(createTodoDto.name());
         todo.setDescription(createTodoDto.description());
         todo.setType(createTodoDto.type());
         todo.setStatus(false);
-        logger.info("Création de la todololist " + todo.getId() +" "+ todo.getTitle());
         todo = toDoListRepository.save(todo);
+        logger.info("Création de la todololist " + todo.getId() +" "+ todo.getTitle());
         return new TodoDto(todo.getId(), todo.getTitle(), todo.getDescription(), todo.getType(), todo.getStatus());
     }
 
@@ -36,8 +38,10 @@ public class TodoService implements ITodoService {
        Todo list = toDoListRepository.findById(id).orElseThrow();
        return new TodoDto(list.getId(), list.getTitle(), list.getDescription(), list.getType(), list.getStatus());
     }
-    public ArrayList<TodoDto> fetchAll() {
-        Iterable<Todo> list = toDoListRepository.findAll();
+    public ArrayList<TodoDto> fetchAll(Authentication authentication) {
+        String name = authentication.getName();
+        logger.info("Récupération de tout les todo : " + name);
+        Iterable<Todo> list = toDoListRepository.findByName(name);
 
         ArrayList<TodoDto> listOfTodo = new ArrayList<>();
 

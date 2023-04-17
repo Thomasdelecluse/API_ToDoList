@@ -11,6 +11,8 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     private String title;
 
     private String description;
@@ -59,5 +61,17 @@ public class Todo {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isStatus() {
+        return status;
     }
 }

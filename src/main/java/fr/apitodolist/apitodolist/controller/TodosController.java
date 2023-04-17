@@ -5,6 +5,7 @@ import fr.apitodolist.apitodolist.dto.todo.TodoDto;
 import fr.apitodolist.apitodolist.dto.todo.UpdateTodoDto;
 import fr.apitodolist.apitodolist.service.impl.TodoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -32,9 +33,10 @@ public class TodosController {
         return todoService.fetchById(id);
     }
 
+
     @GetMapping("/todos")
-    public ResponseEntity<ArrayList<TodoDto>> fetchAll() {
-        return ResponseEntity.ok(todoService.fetchAll());
+    public ResponseEntity<ArrayList<TodoDto>> fetchAll(Authentication authentication) {
+        return ResponseEntity.ok(todoService.fetchAll(authentication));
     }
 
     @PutMapping("/todos/{id}")
