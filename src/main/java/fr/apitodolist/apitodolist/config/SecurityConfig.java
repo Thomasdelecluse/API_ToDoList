@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .addFilter(new JwtAuthenticationFilter(authenticationManagerBuilder.getObject(), jwtTokens, secretKey))
                         .addFilter(new JwtAuthorizationFilter(authenticationManagerBuilder.getObject(), jwtTokens, secretKey))
                 .authorizeHttpRequests()
-                        .requestMatchers(HttpMethod.POST, "/utilisateur")
+                        .requestMatchers(HttpMethod.POST, "/utilisateurs")
                             .permitAll()
                         .requestMatchers(HttpMethod.GET,"/test")
                             .hasRole("ADMIN")
