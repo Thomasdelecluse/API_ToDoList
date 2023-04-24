@@ -7,8 +7,10 @@ import fr.apitodolist.apitodolist.modele.Todo;
 import fr.apitodolist.apitodolist.repository.ITodoRepository;
 import fr.apitodolist.apitodolist.service.ITodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -22,10 +24,10 @@ public class TodoService implements ITodoService {
     @Autowired
     private ITodoRepository toDoListRepository;
 
-    public TodoDto create(CreateTodoDto createTodoDto) {
+    public TodoDto create(CreateTodoDto createTodoDto, Authentication authentication) {
         Todo todo = new Todo();
         todo.setTitle(createTodoDto.title());
-        todo.setName(createTodoDto.name());
+        todo.setName(authentication.getName());
         todo.setDescription(createTodoDto.description());
         todo.setType(createTodoDto.type());
         todo.setStatus(false);
@@ -53,8 +55,11 @@ public class TodoService implements ITodoService {
         return listOfTodo;
     }
 
-    public TodoDto updateById(long id, UpdateTodoDto updateTodoDto) {
+    public TodoDto updateById(long id, UpdateTodoDto updateTodoDto, Authentication authentication) {
         Todo todo = toDoListRepository.findById(id).orElseThrow();
+        if(!todo.getName().equals(authentication.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vous ne pouvez pas modifier le status d'un todos qui n'est pas le vôtre");
+        }
         if(updateTodoDto.status() != null) {
             todo.setStatus(updateTodoDto.status());
         }
