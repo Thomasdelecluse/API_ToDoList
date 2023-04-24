@@ -4,8 +4,10 @@ import fr.apitodolist.apitodolist.dto.todo.CreateTodoDto;
 import fr.apitodolist.apitodolist.dto.todo.TodoDto;
 import fr.apitodolist.apitodolist.dto.todo.UpdateTodoDto;
 import fr.apitodolist.apitodolist.service.impl.TodoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -23,8 +25,8 @@ public class TodosController {
     }
 
     @PostMapping("/todos")
-    public ResponseEntity<TodoDto> create(@RequestBody CreateTodoDto createTodoDto) {
-        TodoDto todo = todoService.create(createTodoDto);
+    public ResponseEntity<TodoDto> create(@RequestBody CreateTodoDto createTodoDto,Authentication authentication) {
+        TodoDto todo = todoService.create(createTodoDto, authentication);
         return ResponseEntity.created(URI.create("/todos/" + todo.id())).body(todo);
     }
 
@@ -40,8 +42,13 @@ public class TodosController {
     }
 
     @PutMapping("/todos/{id}")
-    public ResponseEntity<TodoDto> fetchById(@PathVariable long id, @RequestBody UpdateTodoDto toDoList) {
-           return ResponseEntity.ok(todoService.updateById(id, toDoList));
+    public ResponseEntity<?> fetchById(@PathVariable long id, @RequestBody UpdateTodoDto toDoList, Authentication authentication) {
+        try{
+            return ResponseEntity.ok(todoService.updateById(id, toDoList, authentication));
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @DeleteMapping ("/todos/{id}")
