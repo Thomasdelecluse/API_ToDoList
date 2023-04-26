@@ -1,16 +1,13 @@
 package fr.apitodolist.apitodolist.controller;
 
-import fr.apitodolist.apitodolist.config.error.FunctionalExeption;
+import fr.apitodolist.apitodolist.config.error.FunctionalException;
 import fr.apitodolist.apitodolist.dto.todo.CreateTodoDto;
 import fr.apitodolist.apitodolist.dto.todo.TodoDto;
 import fr.apitodolist.apitodolist.dto.todo.UpdateTodoDto;
 import fr.apitodolist.apitodolist.service.impl.TodoService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.security.Principal;
@@ -44,7 +41,7 @@ public class TodosController {
     }
 
     @PutMapping("/todos/{id}")
-    public ResponseEntity<TodoDto> fetchById(@PathVariable long id, @RequestBody UpdateTodoDto toDoList, Authentication authentication) throws FunctionalExeption {
+    public ResponseEntity<TodoDto> fetchById(@PathVariable long id, @RequestBody UpdateTodoDto toDoList, Authentication authentication) throws FunctionalException {
             return ResponseEntity.ok(todoService.updateById(id, toDoList, authentication));
     }
 

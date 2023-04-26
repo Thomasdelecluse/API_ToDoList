@@ -7,8 +7,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
-    @ExceptionHandler(FunctionalExeption.class)
-    public ResponseEntity<String> handleFunctionalExeption(FunctionalExeption e) {
+    @ExceptionHandler(FunctionalException.class)
+    public ResponseEntity<String> handleFunctionalExeption(FunctionalException e) {
         HttpStatus httpStatus = e.getHttpStatus();
         return ResponseEntity.status(httpStatus).body(e.getMessage());
     }

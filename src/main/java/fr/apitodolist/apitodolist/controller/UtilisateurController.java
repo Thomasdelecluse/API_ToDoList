@@ -1,6 +1,6 @@
 package fr.apitodolist.apitodolist.controller;
 
-import fr.apitodolist.apitodolist.config.error.FunctionalExeption;
+import fr.apitodolist.apitodolist.config.error.FunctionalException;
 import fr.apitodolist.apitodolist.dto.register.CreateUtilisateurDto;
 import fr.apitodolist.apitodolist.dto.register.UtilisateurDto;
 import fr.apitodolist.apitodolist.service.impl.UtilisateurService;
@@ -23,7 +23,7 @@ public class UtilisateurController {
 
 
     @PostMapping("/utilisateurs")
-    public ResponseEntity<UtilisateurDto> create(@RequestBody CreateUtilisateurDto createUtilisateurDto) throws FunctionalExeption {
+    public ResponseEntity<UtilisateurDto> create(@RequestBody CreateUtilisateurDto createUtilisateurDto) throws FunctionalException {
             UtilisateurDto createAccount = utilisateurService.create(createUtilisateurDto);
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -44,7 +44,7 @@ public class UtilisateurController {
     }
 
     @GetMapping("/utilisateurs")
-    public ResponseEntity<ArrayList<UtilisateurDto>> fetchAll() throws FunctionalExeption{
+    public ResponseEntity<ArrayList<UtilisateurDto>> fetchAll() throws FunctionalException {
             return  ResponseEntity.ok(utilisateurService.fetchAll());
     }
 
