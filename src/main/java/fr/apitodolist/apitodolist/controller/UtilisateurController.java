@@ -1,19 +1,17 @@
 package fr.apitodolist.apitodolist.controller;
 
-import fr.apitodolist.apitodolist.dto.register.UtilisateurDto;
+import fr.apitodolist.apitodolist.config.error.FunctionalExeption;
 import fr.apitodolist.apitodolist.dto.register.CreateUtilisateurDto;
+import fr.apitodolist.apitodolist.dto.register.UtilisateurDto;
 import fr.apitodolist.apitodolist.service.impl.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.ArrayList;
 
 @RestController
@@ -25,8 +23,7 @@ public class UtilisateurController {
 
 
     @PostMapping("/utilisateurs")
-    public ResponseEntity<?> create(@RequestBody CreateUtilisateurDto createUtilisateurDto) {
-        try {
+    public ResponseEntity<UtilisateurDto> create(@RequestBody CreateUtilisateurDto createUtilisateurDto) throws FunctionalExeption {
             UtilisateurDto createAccount = utilisateurService.create(createUtilisateurDto);
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -34,9 +31,6 @@ public class UtilisateurController {
                     .buildAndExpand(createAccount.login())
                     .toUri();
             return ResponseEntity.created(location).body(createAccount);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
     }
 
     @GetMapping("/utilisateurs/{login}")
@@ -50,13 +44,8 @@ public class UtilisateurController {
     }
 
     @GetMapping("/utilisateurs")
-    public ResponseEntity<ArrayList<UtilisateurDto>> fetchAll() {
-        try{
+    public ResponseEntity<ArrayList<UtilisateurDto>> fetchAll() throws FunctionalExeption{
             return  ResponseEntity.ok(utilisateurService.fetchAll());
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
     }
 
 
