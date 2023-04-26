@@ -1,5 +1,6 @@
 package fr.apitodolist.apitodolist.service.impl;
 
+import fr.apitodolist.apitodolist.config.error.FunctionalExeption;
 import fr.apitodolist.apitodolist.dto.todo.CreateTodoDto;
 import fr.apitodolist.apitodolist.dto.todo.TodoDto;
 import fr.apitodolist.apitodolist.dto.todo.UpdateTodoDto;
@@ -7,13 +8,14 @@ import fr.apitodolist.apitodolist.modele.Todo;
 import fr.apitodolist.apitodolist.repository.ITodoRepository;
 import fr.apitodolist.apitodolist.service.ITodoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 
 @Service
@@ -55,10 +57,10 @@ public class TodoService implements ITodoService {
         return listOfTodo;
     }
 
-    public TodoDto updateById(long id, UpdateTodoDto updateTodoDto, Authentication authentication) {
+    public TodoDto updateById(long id, UpdateTodoDto updateTodoDto, Authentication authentication) throws FunctionalExeption {
         Todo todo = toDoListRepository.findById(id).orElseThrow();
         if(!todo.getName().equals(authentication.getName())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vous ne pouvez pas modifier le status d'un todos qui n'est pas le vôtre");
+            throw new FunctionalExeption(UNAUTHORIZED, "Vous ne pouvez pas modifier le status d'un todos qui n'est pas le vôtre");
         }
         if(updateTodoDto.status() != null) {
             todo.setStatus(updateTodoDto.status());
