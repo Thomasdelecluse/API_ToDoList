@@ -4,6 +4,8 @@ import fr.apitodolist.apitodolist.config.error.FunctionalException;
 import fr.apitodolist.apitodolist.dto.register.CreateUtilisateurDto;
 import fr.apitodolist.apitodolist.dto.register.UtilisateurDto;
 import fr.apitodolist.apitodolist.service.impl.UtilisateurService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,7 @@ public class UtilisateurController {
                     .toUri();
             return ResponseEntity.created(location).body(createAccount);
     }
-
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/utilisateurs/{login}")
     @PreAuthorize("#login.equals(authentication.name)")
     public ResponseEntity<UtilisateurDto> fetchById(@PathVariable String login) {
@@ -42,7 +44,7 @@ public class UtilisateurController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/utilisateurs")
     public ResponseEntity<ArrayList<UtilisateurDto>> fetchAll() throws FunctionalException {
             return  ResponseEntity.ok(utilisateurService.fetchAll());
