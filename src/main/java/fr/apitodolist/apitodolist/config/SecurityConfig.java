@@ -7,13 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,6 +43,10 @@ public class SecurityConfig {
                         .addFilter(new JwtAuthorizationFilter(authenticationManagerBuilder.getObject(), jwtTokens, secretKey))
                 .authorizeHttpRequests()
                         .requestMatchers(HttpMethod.POST, "/utilisateurs")
+                            .permitAll()
+                        .requestMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**")
+                            .permitAll()
+                        .requestMatchers("/h2-console/**")
                             .permitAll()
                         .requestMatchers(HttpMethod.GET,"/test")
                             .hasRole("ADMIN")
