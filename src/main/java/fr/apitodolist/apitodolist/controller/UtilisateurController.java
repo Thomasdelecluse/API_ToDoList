@@ -34,6 +34,8 @@ public class UtilisateurController {
                     .toUri();
             return ResponseEntity.created(location).body(createAccount);
     }
+
+    //Operation -> Swagger use Bearer
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/utilisateurs/{login}")
     @PreAuthorize("#login.equals(authentication.name)")
@@ -44,6 +46,8 @@ public class UtilisateurController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    //Operation -> Swagger use Bearer
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/utilisateurs")
     public ResponseEntity<ArrayList<UtilisateurDto>> fetchAll() throws FunctionalException {

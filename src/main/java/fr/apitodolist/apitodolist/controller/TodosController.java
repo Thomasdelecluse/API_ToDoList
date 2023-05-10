@@ -25,28 +25,37 @@ public class TodosController {
         this.todoService = todoService;
     }
 
+    //Operation -> Swagger use Bearer
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @PostMapping("/todos")
     public ResponseEntity<TodoDto> create(@RequestBody CreateTodoDto createTodoDto,Authentication authentication) {
         TodoDto todo = todoService.create(createTodoDto, authentication);
         return ResponseEntity.created(URI.create("/todos/" + todo.id())).body(todo);
     }
+
+    //Operation -> Swagger use Bearer
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/todos/{id}")
     public TodoDto fetchById(@PathVariable Long id) {
         return todoService.fetchById(id);
     }
 
+
+    //Operation -> Swagger use Bearer
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("/todos")
     public ResponseEntity<ArrayList<TodoDto>> fetchAll(Authentication authentication) {
         return ResponseEntity.ok(todoService.fetchAll(authentication));
     }
+
+    //Operation -> Swagger use Bearer
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @PutMapping("/todos/{id}")
     public ResponseEntity<TodoDto> fetchById(@PathVariable long id, @RequestBody UpdateTodoDto toDoList, Authentication authentication) throws FunctionalException {
             return ResponseEntity.ok(todoService.updateById(id, toDoList, authentication));
     }
+
+    //Operation -> Swagger use Bearer
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @DeleteMapping ("/todos/{id}")
     public ResponseEntity<?> deleteById(@PathVariable long id) {
