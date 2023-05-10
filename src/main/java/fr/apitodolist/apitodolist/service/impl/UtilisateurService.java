@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 @Service
 public class UtilisateurService {
@@ -19,10 +20,14 @@ public class UtilisateurService {
     @Autowired
     IUtilisateurRepository iUtilisateurRepository;
     public UtilisateurDto create(CreateUtilisateurDto createUtilisateurDto) throws FunctionalException {
+        //check if login already exist
+        if(createUtilisateurDto.login().isEmpty()){
+            throw new FunctionalException(BAD_REQUEST, "Login is null");
+        }
         Utilisateur usersAlreadyExist = iUtilisateurRepository.findByLogin(createUtilisateurDto.login());
         //check if login already exist
         if(usersAlreadyExist != null){
-            throw new FunctionalException(BAD_REQUEST, "Login already exist");
+            throw new FunctionalException(CONFLICT, "Login already exist");
         }
         //create new utilisateur
         Utilisateur utilisateur = new Utilisateur();
