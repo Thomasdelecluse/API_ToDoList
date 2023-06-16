@@ -37,7 +37,7 @@ jobs:
       - name: SSH to Server
         uses: appleboy/ssh-action@master
         with:
-          host: 34.229.90.67
+          host: 34.200.26.248
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
 
