@@ -31,9 +31,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Run tests
-        uses: actions/setup-java@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          maven-version: 3.8.4
-      - name: Run tests
-        run: mvn test
+          java-version: 17
+          distribution: adopt
+
+      - name: Build and test with Maven
+        run: mvn clean test
