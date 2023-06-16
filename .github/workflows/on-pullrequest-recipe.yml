@@ -53,5 +53,4 @@ jobs:
             docker rm api-todolist
             docker pull ghcr.io/thomasdelecluse/api_todolist_cicd:latest
             docker run -d --name api-todolist -p 8080:8080 ghcr.io/thomasdelecluse/api_todolist_cicd:latest
-            docker run --name mariadbdatabase -e MYSQL_ROOT_PASSWORD=pass -p 3306:3306 -d mariadb:latest
 
