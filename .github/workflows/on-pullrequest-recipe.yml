@@ -7,9 +7,12 @@ on:
 
 jobs:
   docker:
-    needs: test
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        ref: ${{ github.ref_name}}
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
