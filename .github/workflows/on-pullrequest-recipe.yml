@@ -47,6 +47,7 @@ jobs:
             # Add your desired commands here
             # Example: npm run build
 
+
             docker login ghcr.io -u thomasdelecluse -p ${{ secrets.TOKEN }}
             docker stop api-todolist
             docker rm api-todolist
