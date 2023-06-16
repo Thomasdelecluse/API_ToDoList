@@ -18,7 +18,8 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17' # Replace this value with your desired Java version
-
+          distribution: 'adopt'
+          
       - name: Build with Maven
         run: mvn clean install
 
