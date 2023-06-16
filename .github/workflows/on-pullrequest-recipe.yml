@@ -26,4 +26,31 @@ jobs:
         with:
           push: true
           tags: ghcr.io/thomasdelecluse/api_todolist_cicd:latest
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: SSH to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: 34.229.90.67
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          # Optional: If you need to execute specific commands on the server
+          script: |
+            echo "Connected to the server via SSH"
+            # Add your desired commands here
+            # Example: npm run build
+
+            docker login ghcr.io -u thomasdelecluse -p ${{ secrets.TOKEN }}
+            docker stop api-todolist
+            docker rm api-todolist
+            docker pull ghcr.io/thomasdelecluse/api_todolist_cicd:latest
+            docker run -d --name api-todolist -p 8080:8080 ghcr.io/thomasdelecluse/api_todolist_cicd:latest
+            docker run --name mariadbdatabase -e MYSQL_ROOT_PASSWORD=pass -p 3306:3306 -d mariadb:latest
 
