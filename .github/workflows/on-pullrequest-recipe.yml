@@ -1,0 +1,24 @@
+name: Java with Spring CI
+
+on:
+  pull_request:
+    branches:
+      - recipe
+
+jobs:
+  docker:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.TOKEN }}
+      - name: Build docker image with ghcr
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: ghcr.io/thomasdelecluse/api_todolist_cicd:latest
+
