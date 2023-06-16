@@ -17,7 +17,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: 17 # Replace this value with your desired Java version
+          java-version: 17
           distribution: adopt
 
       - name: Build with Maven
@@ -31,5 +31,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up JDK 8 for tests
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: adopt
+
       - name: Run tests
-        run: mvn test -Dmaven.compiler.release=17
+        run: mvn test
