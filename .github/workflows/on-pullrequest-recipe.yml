@@ -1,5 +1,6 @@
 name: Java with Spring CI
 
+
 on:
   pull_request:
     branches:
@@ -25,4 +26,31 @@ jobs:
         with:
           push: true
           tags: ghcr.io/thomasdelecluse/api_todolist_cicd:latest
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: SSH to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: 34.200.26.248
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          # Optional: If you need to execute specific commands on the server
+          script: |
+            echo "Connected to the server via SSH"
+            # Add your desired commands here
+            # Example: npm run build
+
+
+            docker login ghcr.io -u thomasdelecluse -p ${{ secrets.TOKEN }}
+            docker stop api-todolist
+            docker rm api-todolist
+            docker pull ghcr.io/thomasdelecluse/api_todolist_cicd:latest
+            docker run -d --name api-todolist -p 8080:8080 ghcr.io/thomasdelecluse/api_todolist_cicd:latest
 
